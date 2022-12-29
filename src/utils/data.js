@@ -3,7 +3,7 @@ import axios from "./request";
 // 登录获取token
 export const permitLogin = (params) => {
     return axios({
-        url: '/tokens',
+        url: '/tokens/',
         method: "post",
         data: `username=${params.adminName}&password=${params.passward}`,
         headers: {
@@ -15,7 +15,7 @@ export const permitLogin = (params) => {
 // 获取用户-所有
 export const userGet = () => {
     return axios({
-        url: '/users',
+        url: '/users/',
         method: "get",
     })
 }
@@ -23,7 +23,7 @@ export const userGet = () => {
 // 添加用户
 export const userAdd = (params) => {
     return axios({
-        url: '/users',
+        url: '/users/',
         method: "post",
         data: {
             name: params.name,
@@ -37,7 +37,7 @@ export const userAdd = (params) => {
 // 编辑用户
 export const userEdit = (params) => {
     return axios({
-        url: `/users/${params.id}`,
+        url: `/users/${params.id}/`,
         method: "patch",
         data: {
             name: params.name,
@@ -50,7 +50,7 @@ export const userEdit = (params) => {
 // 删除用户
 export const userDelete = (params) => {
     return axios({
-        url: `/users/${params}`,
+        url: `/users/${params}/`,
         method: "delete",
     })
 }
@@ -58,7 +58,7 @@ export const userDelete = (params) => {
 // 获取房间
 export const roomGet = () => {
     return axios({
-        url: '/rooms',
+        url: '/rooms/',
         method: "get",
     })
 }
@@ -66,7 +66,7 @@ export const roomGet = () => {
 // 添加房间
 export const roomAdd = (params) => {
     return axios({
-        url: '/rooms',
+        url: '/rooms/',
         method: "post",
         data: {
             room_number: params.room_number,
@@ -79,7 +79,7 @@ export const roomAdd = (params) => {
 // 编辑房间
 export const roomEdit = (params) => {
     return axios({
-        url: `/rooms/${params.id}`,
+        url: `/rooms/${params.id}/`,
         method: "patch",
         data: {
             room_number: params.room_number,
@@ -93,7 +93,7 @@ export const roomEdit = (params) => {
 // 删除房间
 export const roomDelete = (params) => {
     return axios({
-        url: `/rooms/${params}`,
+        url: `/rooms/${params}/`,
         method: "delete",
     })
 }
