@@ -1,5 +1,4 @@
 import { userGet, userAdd, userDelete, userEdit } from "../utils/data.js";
-import Vue from 'vue'
 
 export const user = {
 	namespaced: true,//开启命名空间

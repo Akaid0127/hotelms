@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import tab from './tab'
 import { user } from './user'
 import { room } from './room'
+import { order } from './order'
+
 
 
 Vue.use(Vuex)
@@ -14,5 +16,6 @@ export default new Vuex.Store({
 		tab,
 		user,
 		room,
+		order,
 	}
 })

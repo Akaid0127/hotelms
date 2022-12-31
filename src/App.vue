@@ -21,10 +21,18 @@ export default {
         ...mapActions("room", {
             getRoomAsync: "getRoomAsync", // 获取房间all
         }),
-        stateLoad(){
-            this.getUserAsync()
-            this.getRoomAsync()
-        }
+        stateLoad() {
+            this.getUserAsync();
+            this.getRoomAsync();
+        },
+
+        bodyScale() {
+            let devicewidth = document.documentElement.clientWidth; //获取当前分辨率下的可是区域宽度
+            let widthScale = devicewidth / 1707; // 分母——设计稿的尺寸
+            document.body.style.zoom = widthScale; //放大缩小相应倍数
+            let heightScale = document.documentElement.clientHeight;
+            document.body.style.height = heightScale;
+        },
     },
     // 解决刷新数据丢失问题
     // created() {
@@ -46,6 +54,8 @@ export default {
     // },
 
     mounted() {
+        //console.log(document.documentElement.clientWidth)
+        this.bodyScale();
         // this.stateLoad()
     },
 };
@@ -63,7 +73,9 @@ h3 {
 
 /* 设置项目高占比视口100% */
 #app {
-    height: 100vh;
-    background-color: #F7F6F2;
+    /* height: 100vh; */
+    /* 如果采用zoom缩放适配，高度宽度都要写死 */
+    height: 924px;
+    background-color: #f7f6f2;
 }
 </style>

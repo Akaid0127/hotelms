@@ -9,6 +9,7 @@
             background-color="#4B6587"
             text-color="#fff"
             active-text-color="#ffd04b"
+            ref="elMenu"
         >
             <!-- 根据是否展开显示名称 -->
             <h3>{{isCollapse ? '后台' : '宾馆后台管理系统'}}</h3>
@@ -163,7 +164,8 @@ export default {
     },
 
     mounted() {
-        // console.log(this.noChildren)
+        // console.log(document.documentElement.clientHeight)
+        this.$refs.elMenu.$el.style.height = document.documentElement.clientHeight
     },
 };
 </script>
@@ -171,12 +173,13 @@ export default {
 <style scoped lang="less">
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
-    min-height: 400px;
+    // min-height: 100vh;
+    height: 924px;
+    
 }
 
 .el-menu {
     // 设置占比窗口视口100%
-    height: 100vh;
     border: none;
     h3 {
         height: 48px;

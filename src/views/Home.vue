@@ -375,6 +375,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    // height: 30vh;
     .user {
         display: flex;
         flex-direction: row;

@@ -1,5 +1,4 @@
 import { roomGet, roomAdd, roomDelete, roomEdit } from "../utils/data.js";
-import Vue from 'vue'
 
 export const room = {
 	namespaced: true,//开启命名空间
@@ -83,7 +82,30 @@ export const room = {
 					state.roomData.splice(index, 1)
 				}
 			})
-		}
+		},
+
+		// 根据房间类型模糊查询房间
+		searchRoomByType(state, value) {
+			let queryData = state.roomData.filter((p) => {
+				return p.type_.indexOf(value) !== -1
+			})
+			state.roomData.splice(0, state.roomData.length)
+			queryData.forEach(item => {
+				state.roomData.push(item)
+			})
+		},
+
+		// 根据房间状态模糊查询房间
+		searchRoomByStatus(state, value) {
+			let queryData = state.roomData.filter((p) => {
+				return p.room_status.indexOf(value) !== -1
+			})
+			state.roomData.splice(0, state.roomData.length)
+			queryData.forEach(item => {
+				state.roomData.push(item)
+			})
+		},
+
 	},
 
 	state: {

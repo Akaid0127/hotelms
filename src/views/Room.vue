@@ -1,7 +1,7 @@
 <template>
     <div class="room">
         <div class="top">
-            <!-- 用户添加 -->
+            <!-- 房间添加 -->
             <div class="add-room">
                 <el-dialog
                     title="新增客房"
@@ -57,8 +57,16 @@
                         :value="item.value"
                     ></el-option>
                 </el-select>
-                <el-input v-model="searchKeyWord" placeholder="请输入关键词"></el-input>
+                <el-select v-model="searchKeyWord" placeholder="请选择">
+                    <el-option
+                        v-for="item in (searchOptionValue=='roomType'?searchKeyWordOptions1:searchKeyWordOptions2)"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    ></el-option>
+                </el-select>
                 <el-button type="info" plain @click="search">搜索客房</el-button>
+                <el-button type="info" plain @click="searchReset">重置</el-button>
             </div>
         </div>
 
@@ -74,12 +82,13 @@
                     :formatter="(row) => roomFomatter(row.type_, roomTypeList)"
                 ></el-table-column>
                 <el-table-column prop="price" label="房间价格"></el-table-column>
-                <el-table-column
-                    prop="room_status"
-                    label="房间状态"
-                    :formatter="(row) => roomFomatter(row.room_status, roomStatusList)"
-                ></el-table-column>
-
+                <el-table-column prop="room_status" label="房间状态">
+                    <template slot-scope="scope">
+                        <el-tag
+                            :type="roomFomatter(roomFomatter(scope.row.room_status, roomStatusList),roomStatusTagList)"
+                        >{{roomFomatter(scope.row.room_status, roomStatusList)}}</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="balance" label="操作">
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
@@ -208,8 +217,30 @@ export default {
                 },
             ],
 
+            searchKeyWordOptions1: [
+                {
+                    value: "single",
+                    label: "豪华大床房",
+                },
+                {
+                    value: "twin",
+                    label: "简约双床房",
+                },
+                {
+                    value: "family",
+                    label: "温馨家庭房",
+                },
+            ],
+
+            searchKeyWordOptions2: [
+                { value: "vacant", label: "空闲中" },
+                { value: "occupied", label: "已住客" },
+                { value: "dirty", label: "未清扫" },
+                { value: "reserved", label: "已预订" },
+            ],
+
             // 两者配合实现搜索
-            // 搜索用户下拉值
+            // 搜索房间下拉值
             searchOptionValue: "roomType",
 
             // 搜索关键词
@@ -235,6 +266,14 @@ export default {
                 { itemValue: "dirty", itemName: "未清扫" },
                 { itemValue: "reserved", itemName: "已预订" },
             ],
+
+            // 房间状态表格内标签
+            roomStatusTagList: [
+                { itemValue: "空闲中", itemName: "success" },
+                { itemValue: "已住客", itemName: "info" },
+                { itemValue: "未清扫", itemName: "danger" },
+                { itemValue: "已预订", itemName: "warning" },
+            ],
         };
     },
 
@@ -244,16 +283,18 @@ export default {
 
     methods: {
         ...mapActions("room", {
-            getRoomAsync: "getRoomAsync", // 获取用户all
-            addRoomAsync: "addRoomAsync", // 添加用户单个
-            editRoomAsync: "editRoomAsync", // 添加用户单个
-            deleteRoomAsync: "deleteRoomAsync", //删除用户单个
+            getRoomAsync: "getRoomAsync", // 获取房间all
+            addRoomAsync: "addRoomAsync", // 添加房间单个
+            editRoomAsync: "editRoomAsync", // 添加房间单个
+            deleteRoomAsync: "deleteRoomAsync", //删除房间单个
         }),
         ...mapMutations("room", {
-            getRoomMutation: "getRoom", // 获取用户all
-            addRoomMutation: "addRoom", // 添加用户单个
-            editRoomMutation: "editRoom", // 添加用户单个
-            deleteRoomMutation: "deleteRoom", // 删除用户单个
+            getRoomMutation: "getRoom", // 获取房间all
+            addRoomMutation: "addRoom", // 添加房间单个
+            editRoomMutation: "editRoom", // 添加房间单个
+            deleteRoomMutation: "deleteRoom", // 删除房间单个
+            searchRoomByType: "searchRoomByType", // 查询房间--类型
+            searchRoomByStatus: "searchRoomByStatus", // 查询房间--状态
         }),
 
         // 获取所有房间列表 数据
@@ -330,14 +371,7 @@ export default {
             this.dialogVisibleEdit = false;
         },
 
-        // 搜索用户
-        search() {
-            // 后续对搜索关键词的处理
-
-            console.log(this.searchKeyWord, this.searchOptionValue);
-        },
-
-        // 编辑用户
+        // 编辑房间
         handleEdit(row) {
             this.dialogVisibleEdit = true;
             // 注意对当前数据进行数据深拷贝，否则会出错
@@ -350,7 +384,7 @@ export default {
             });
         },
 
-        // 删除用户
+        // 删除房间
         handleDel(row) {
             this.$confirm("此操作将永久删除该信息，是否继续？", "提示", {
                 confirmButtonText: "确定",
@@ -380,6 +414,25 @@ export default {
             if (value === "" || value == undefined) return "";
             const item = list.find((item) => item.itemValue == value);
             return item ? item.itemName : "";
+        },
+
+        // 搜索房间
+        search() {
+            if (this.searchOptionValue === "roomType") {
+                this.searchRoomByType(this.searchKeyWord);
+            } else if (this.searchOptionValue === "roomStatus") {
+                this.searchRoomByStatus(this.searchKeyWord);
+            }
+        },
+
+        // 搜索重置
+        searchReset() {
+            // 重新获取表格数据
+            this.getRoom();
+            // 搜索房间下拉值请空
+            this.searchOptionValue = "roomType";
+            // 搜索关键词清空
+            this.searchKeyWord = "";
         },
     },
 

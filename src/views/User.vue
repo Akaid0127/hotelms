@@ -47,6 +47,7 @@
                 </el-select>
                 <el-input v-model="searchKeyWord" placeholder="请输入关键词"></el-input>
                 <el-button type="info" plain @click="search">搜索用户</el-button>
+                <el-button type="info" plain @click="searchReset">重置</el-button>
             </div>
         </div>
 
@@ -277,7 +278,7 @@ export default {
                 });
         },
 
-        // 搜索用户--姓名
+        // 搜索用户
         search() {
             if (this.searchOptionValue === "userName") {
                 this.searchUserByName(this.searchKeyWord);
@@ -286,6 +287,16 @@ export default {
             } else if (this.searchOptionValue === "userIdentity") {
                 this.searchUserByIdent(this.searchKeyWord);
             }
+        },
+
+        // 搜索用户重置
+        searchReset() {
+            // 重新获取表格数据
+            this.getUser();
+            // 搜索用户下拉值请空
+            this.searchOptionValue = "userName";
+            // 搜索关键词清空
+            this.searchKeyWord = "";
         },
     },
 
@@ -296,9 +307,9 @@ export default {
 
     updated() {
         // 搜索input框为空时重新加载表格获取后台数据
-        if ((this.searchKeyWord == "")) {
-            this.getUser();
-        }
+        // if ((this.searchKeyWord == "")) {
+        //     this.getUser();
+        // }
     },
 
     created() {

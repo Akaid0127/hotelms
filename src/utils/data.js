@@ -97,3 +97,42 @@ export const roomDelete = (params) => {
         method: "delete",
     })
 }
+
+// 获取订单
+export const orderGet = () => {
+    return axios({
+        url: '/orders',
+        method: "get",
+    })
+}
+
+// 添加订单
+export const orderAdd = (params) => {
+    return axios({
+        url: '/orders',
+        method: "post",
+        data: {
+            user_id: params.user_id,
+            room_id: params.room_id,
+            check_in_time: params.check_in_time,
+            stay_length: params.stay_length,
+        }
+    })
+}
+
+// 编辑订单
+export const orderEdit = (params) => {
+    return axios({
+        url: `/orders/${params.id}`,
+        method: "patch",
+        params: { payment_status: params.payment_status, },
+    })
+}
+
+// 删除订单
+export const orderDelete = (params) => {
+    return axios({
+        url: `/orders/${params}`,
+        method: "delete",
+    })
+}
