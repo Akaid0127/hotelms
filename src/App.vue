@@ -11,7 +11,18 @@ import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
     name: "App",
     components: {},
+<<<<<<< HEAD
 
+=======
+    data() {
+        return {};
+    },
+    // computed: {
+    //     ...mapState("order", ["orderData", "orderTotal", "orderTotalPaid"]),
+    //     ...mapState("room", ["roomData", "roomTotal", "roomTotalRes"]),
+    //     ...mapState("user", ["userData"]),
+    // },
+>>>>>>> 3bc577c (123)
     methods: {
         // 提前更新vuexstate数据
         ...mapActions("user", {
@@ -21,9 +32,27 @@ export default {
         ...mapActions("room", {
             getRoomAsync: "getRoomAsync", // 获取房间all
         }),
+<<<<<<< HEAD
         stateLoad() {
             this.getUserAsync();
             this.getRoomAsync();
+=======
+
+        ...mapActions("order", {
+            getOrderAsync: "getOrderAsync", // 获取订单all
+        }),
+
+        ...mapMutations("order", {
+            ordersTotalCount: "ordersTotalCount", // 计算所有订单数
+            orderTotalPaidCount: "orderTotalPaidCount", // 计算所有已支付订单数
+        }),
+
+        stateLoad() {
+            // +页面重新刷新时执行
+            this.getUserAsync();
+            this.getRoomAsync();
+            this.getOrderAsync();
+>>>>>>> 3bc577c (123)
         },
 
         bodyScale() {
@@ -34,6 +63,7 @@ export default {
             document.body.style.height = heightScale;
         },
     },
+<<<<<<< HEAD
     // 解决刷新数据丢失问题
     // created() {
     //     //在页面加载时读取sessionStorage里的状态信息,然后删除sessionStorage
@@ -57,6 +87,14 @@ export default {
         //console.log(document.documentElement.clientWidth)
         this.bodyScale();
         // this.stateLoad()
+=======
+
+    beforeMount() {},
+
+    created() {
+        this.bodyScale();
+        this.stateLoad();
+>>>>>>> 3bc577c (123)
     },
 };
 </script>

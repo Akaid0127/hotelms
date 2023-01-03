@@ -31,11 +31,24 @@
                                 v-model="orderFormData.check_in_time"
                                 type="datetime"
                                 placeholder="选择日期时间"
+<<<<<<< HEAD
+=======
+                                :picker-options="pickerOptions"
+>>>>>>> 3bc577c (123)
                             ></el-date-picker>
                         </el-form-item>
 
                         <el-form-item label="入住天数" prop="stay_length">
+<<<<<<< HEAD
                             <el-input-number v-model="orderFormData.stay_length" :min="1" :max="999" label="入住天数"></el-input-number>
+=======
+                            <el-input-number
+                                v-model="orderFormData.stay_length"
+                                :min="1"
+                                :max="999"
+                                label="入住天数"
+                            ></el-input-number>
+>>>>>>> 3bc577c (123)
                         </el-form-item>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
@@ -118,6 +131,10 @@ import moment from "moment";
 export default {
     name: "Order",
     data() {
+<<<<<<< HEAD
+=======
+        let that = this;
+>>>>>>> 3bc577c (123)
         return {
             // 控制添加订单弹窗
             dialogVisible: false,
@@ -130,7 +147,11 @@ export default {
                 stay_length: "", // 入住天数
             },
 
+<<<<<<< HEAD
             // 添加房间表单验证
+=======
+            // 添加订单表单验证
+>>>>>>> 3bc577c (123)
             orderRules: {
                 user_id: [
                     {
@@ -201,6 +222,7 @@ export default {
                 { itemValue: "unpaid", itemName: "未支付" },
                 { itemValue: "paid", itemName: "已支付" },
             ],
+<<<<<<< HEAD
         };
     },
 
@@ -209,6 +231,55 @@ export default {
     },
 
     methods: {
+=======
+
+            // 获取房间
+            dayReserved: [],
+
+            // 新增订单时对一房间已预订时间的禁用
+            pickerOptions: {},
+        };
+    },
+
+    watch: {
+        // 监听对象单一属性的时候加引号
+        "orderFormData.room_id": {
+            handler(newVal, oldVal) {
+                if (
+                    typeof this.orderFormData.room_id === "string" &&
+                    this.orderFormData.room_id !== ""
+                ) {
+                    this.dayReserved.splice(0, this.dayReserved.length);
+                    this.reservedDayGet(newVal);
+                    console.log(this.dayReserved);
+                    this.pickerOptions = this.timeLimit();
+                }
+            },
+            immediate: true,
+            // 深度监听对象属性
+            deep: true,
+        },
+    },
+
+    computed: {
+        ...mapState("order", ["orderData"]),
+        ...mapState("room", ["reservedArray"]),
+    },
+
+    methods: {
+        // test
+        timeLimit() {
+            let tempArr = this.dayReserved;
+            return {
+                disabledDate(time) {
+                    // console.log(moment(time.getTime()).format("YYYY-MM-DD"));
+                    let date = moment(time.getTime()).format("YYYY-MM-DD");
+                    return tempArr.indexOf(date) == -1 ? false : true;
+                },
+            };
+        },
+
+>>>>>>> 3bc577c (123)
         ...mapActions("order", {
             getOrderAsync: "getOrderAsync", // 获取订单all
             addOrderAsync: "addOrderAsync", // 添加订单单个
@@ -223,6 +294,16 @@ export default {
             searchOrderByStatus: "searchOrderByStatus", // 查询订单--状态
         }),
 
+<<<<<<< HEAD
+=======
+        ...mapActions("room", {
+            getRoomAsync: "getRoomAsync", // 获取订单all
+        }),
+        ...mapMutations("room", {
+            roomReservedDay: "roomReservedDay", // 获取一房间预定时间
+        }),
+
+>>>>>>> 3bc577c (123)
         // 获取所有订单列表 数据
         getOrder() {
             this.getOrderAsync();
@@ -238,6 +319,10 @@ export default {
         handleClose() {
             // 重置表单项数据
             this.$refs.orderForm.resetFields();
+<<<<<<< HEAD
+=======
+            this.dayReserved.splice(0, this.dayReserved.length);
+>>>>>>> 3bc577c (123)
             this.dialogVisible = false;
         },
 
@@ -264,9 +349,18 @@ export default {
                     this.addOrderAsync(addFormFormat).then(() => {
                         // 重新获取列表接口
                         this.getOrder();
+<<<<<<< HEAD
                     });
                     // 清空表单数据
                     this.$refs.orderForm.resetFields();
+=======
+                        // 及时更新room接口
+                        this.getRoomAsync();
+                    });
+                    // 清空表单数据
+                    this.$refs.orderForm.resetFields();
+                    this.dayReserved.splice(0, this.dayReserved.length);
+>>>>>>> 3bc577c (123)
                     // 关闭弹窗
                     this.dialogVisible = false;
                 }
@@ -305,6 +399,11 @@ export default {
                         });
                         // 重新获取列表接口
                         this.getOrder();
+<<<<<<< HEAD
+=======
+                        // 及时更新room接口
+                        this.getRoomAsync();
+>>>>>>> 3bc577c (123)
                     });
                 })
                 .catch(() => {
@@ -325,7 +424,11 @@ export default {
         // 搜索订单
         search() {
             if (this.searchOptionValue === "orderStatus") {
+<<<<<<< HEAD
                 console.log(this.searchKeyWord)
+=======
+                console.log(this.searchKeyWord);
+>>>>>>> 3bc577c (123)
                 this.searchOrderByStatus(this.searchKeyWord);
             }
         },
@@ -340,6 +443,18 @@ export default {
         dataFormat(timeStamp) {
             return moment(timeStamp).format("YYYY年MM月DD日HH时");
         },
+<<<<<<< HEAD
+=======
+
+        // 房间预定日获取
+        reservedDayGet(roomID) {
+            this.roomReservedDay(roomID);
+            let tempdata = this.$store.state.room.reservedArray;
+            tempdata.forEach((item) => {
+                this.dayReserved.push(item);
+            });
+        },
+>>>>>>> 3bc577c (123)
     },
 
     mount() {

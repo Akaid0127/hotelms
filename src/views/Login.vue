@@ -3,10 +3,17 @@
         <el-card>
             <el-form ref="form" :model="loginForm" :rules="rules" :hide-required-asterisk="false">
                 <h3 class="title">宾馆管理系统</h3>
+<<<<<<< HEAD
                 <el-form-item label="用户名" prop="adminName">
                     <el-input v-model="loginForm.adminName" placeholder="请输入姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="passward">
+=======
+                <el-form-item label="管理员工号" prop="adminName">
+                    <el-input v-model="loginForm.adminName" placeholder="请输入工号"></el-input>
+                </el-form-item>
+                <el-form-item label="管理员密码" prop="passward">
+>>>>>>> 3bc577c (123)
                     <el-input type="passward" v-model="loginForm.passward" placeholder="请输入密码"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -77,7 +84,10 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     permitLogin(this.loginForm).then(({ data }) => {
+<<<<<<< HEAD
                         console.log(data);
+=======
+>>>>>>> 3bc577c (123)
                         if (data.access_token && data.access_token !== "") {
                             // token信息存入cookie用于不同页面的通信
                             Cookie.set("token", data.access_token);

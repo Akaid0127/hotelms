@@ -19,7 +19,12 @@
     "qs": "^6.11.0",
     "vue": "^2.6.14",
     "vue-router": "^3.6.5",
+<<<<<<< HEAD
     "vuex": "^3.6.2"
+=======
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0"
+>>>>>>> 3bc577c (123)
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

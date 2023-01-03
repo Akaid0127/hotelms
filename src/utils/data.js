@@ -135,4 +135,52 @@ export const orderDelete = (params) => {
         url: `/orders/${params}`,
         method: "delete",
     })
+<<<<<<< HEAD
+=======
+}
+
+// 获取管理员--me
+export const adminGet = () => {
+    return axios({
+        url: '/admins/me',
+        method: "get",
+    })
+}
+
+// 编辑管理员密码--me
+export const adminEdit = (params) => {
+    return axios({
+        url: `/admins/me`,
+        method: "patch",
+        data: {
+            password: params.password,
+            name: params.name,
+            new_password: params.new_password,
+        }
+    })
+}
+
+// 删除管理员--me
+export const adminDelete = (params) => {
+    return axios({
+        url: `/admins/me/`,
+        method: "delete",
+        data: {
+            password: params
+        }
+    })
+}
+
+// 添加管理员
+export const adminAdd = (params) => {
+    return axios({
+        url: '/admins',
+        method: "post",
+        data: {
+            job_number: params.job_number,
+            name: params.name,
+            password: params.password,
+        }
+    })
+>>>>>>> 3bc577c (123)
 }
