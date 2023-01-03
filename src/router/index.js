@@ -20,7 +20,11 @@ const routes = [
 	{
 		path: '/',
 		component: Main,
+<<<<<<< HEAD
 		redirect: '/login', // 重定向到home
+=======
+		redirect: '/login', // 重定向到login
+>>>>>>> 3bc577c (123)
 		children: [
 			// 子路由
 			{ path: '/home', name: 'home', component: Home },			// 首页
