@@ -11,9 +11,6 @@ import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
     name: "App",
     components: {},
-<<<<<<< HEAD
-
-=======
     data() {
         return {};
     },
@@ -22,7 +19,6 @@ export default {
     //     ...mapState("room", ["roomData", "roomTotal", "roomTotalRes"]),
     //     ...mapState("user", ["userData"]),
     // },
->>>>>>> 3bc577c (123)
     methods: {
         // 提前更新vuexstate数据
         ...mapActions("user", {
@@ -32,11 +28,6 @@ export default {
         ...mapActions("room", {
             getRoomAsync: "getRoomAsync", // 获取房间all
         }),
-<<<<<<< HEAD
-        stateLoad() {
-            this.getUserAsync();
-            this.getRoomAsync();
-=======
 
         ...mapActions("order", {
             getOrderAsync: "getOrderAsync", // 获取订单all
@@ -52,7 +43,6 @@ export default {
             this.getUserAsync();
             this.getRoomAsync();
             this.getOrderAsync();
->>>>>>> 3bc577c (123)
         },
 
         bodyScale() {
@@ -63,38 +53,12 @@ export default {
             document.body.style.height = heightScale;
         },
     },
-<<<<<<< HEAD
-    // 解决刷新数据丢失问题
-    // created() {
-    //     //在页面加载时读取sessionStorage里的状态信息,然后删除sessionStorage
-    //     if (sessionStorage.getItem("store")) {
-    //         this.$store.replaceState(
-    //             Object.assign(
-    //                 {},
-    //                 this.$store.state,
-    //                 JSON.parse(sessionStorage.getItem("store"))
-    //             )
-    //         );
-    //         sessionStorage.removeItem("store");
-    //     }
-    //     //在页面刷新时将vuex里的信息保存到sessionStorage里
-    //     window.addEventListener("beforeunload", () => {
-    //         sessionStorage.setItem("store", JSON.stringify(this.$store.state));
-    //     });
-    // },
-
-    mounted() {
-        //console.log(document.documentElement.clientWidth)
-        this.bodyScale();
-        // this.stateLoad()
-=======
 
     beforeMount() {},
 
     created() {
         this.bodyScale();
         this.stateLoad();
->>>>>>> 3bc577c (123)
     },
 };
 </script>

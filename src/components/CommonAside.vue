@@ -180,10 +180,7 @@ export default {
 
 .el-menu {
     // 设置占比窗口视口100%
-<<<<<<< HEAD
-=======
     height: 924px;
->>>>>>> 3bc577c (123)
     border: none;
     h3 {
         height: 48px;

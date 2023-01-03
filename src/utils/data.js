@@ -135,8 +135,6 @@ export const orderDelete = (params) => {
         url: `/orders/${params}`,
         method: "delete",
     })
-<<<<<<< HEAD
-=======
 }
 
 // 获取管理员--me
@@ -182,5 +180,4 @@ export const adminAdd = (params) => {
             password: params.password,
         }
     })
->>>>>>> 3bc577c (123)
 }

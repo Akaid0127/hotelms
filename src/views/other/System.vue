@@ -1,14 +1,4 @@
 <template>
-<<<<<<< HEAD
-	<div>
-		System
-	</div>
-</template>
-
-<script>
-export default {
-    name: "System",
-=======
     <div>
         <div class="addAdmin">
             <el-form ref="adminForm" :model="adminForm" label-width="80px">
@@ -57,17 +47,13 @@ export default {
             adminDelete(this.password);
         },
     },
->>>>>>> 3bc577c (123)
 };
 </script>
 
 <style>
-<<<<<<< HEAD
-=======
 .addAdmin {
     margin: 16px;
     width: 350px;
     height: 300px;
 }
->>>>>>> 3bc577c (123)
 </style>

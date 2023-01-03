@@ -73,9 +73,6 @@
         <div class="middle">
             <!-- 房间表格 -->
             <!-- 表格信息 -->
-<<<<<<< HEAD
-            <el-table :data="roomTableData" stripe style="width: 100%" height="720" :border="true">
-=======
             <el-table
                 class="roomTable"
                 :data="roomTableData"
@@ -84,7 +81,6 @@
                 height="720"
                 :border="true"
             >
->>>>>>> 3bc577c (123)
                 <el-table-column prop="id" label="房间ID"></el-table-column>
                 <el-table-column prop="room_number" label="房间号"></el-table-column>
                 <el-table-column
@@ -100,9 +96,6 @@
                         >{{roomFomatter(scope.row.room_status, roomStatusList)}}</el-tag>
                     </template>
                 </el-table-column>
-<<<<<<< HEAD
-                <el-table-column prop="balance" label="操作">
-=======
 
                 <el-table-column prop="calendar" label="房间日程">
                     <template slot-scope="scope">
@@ -111,15 +104,12 @@
                 </el-table-column>
 
                 <el-table-column prop="operation" label="操作">
->>>>>>> 3bc577c (123)
                     <template slot-scope="scope">
                         <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDel(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-<<<<<<< HEAD
-=======
 
             <el-dialog
                 title="房间日程"
@@ -144,7 +134,6 @@
                 </span>
             </el-dialog>
 
->>>>>>> 3bc577c (123)
             <el-dialog
                 title="编辑客房"
                 :visible.sync="dialogVisibleEdit"
@@ -201,10 +190,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-<<<<<<< HEAD
-=======
 import moment from "moment";
->>>>>>> 3bc577c (123)
 export default {
     name: "Room",
     data() {
@@ -213,11 +199,8 @@ export default {
             dialogVisible: false,
             // 控制编辑房间弹窗
             dialogVisibleEdit: false,
-<<<<<<< HEAD
-=======
             // 控制日程表弹窗
             dialogVisibleCalendar: false,
->>>>>>> 3bc577c (123)
 
             // 添加--房间表单项
             roomFormData: {
@@ -292,13 +275,8 @@ export default {
 
             searchKeyWordOptions2: [
                 { value: "vacant", label: "空闲中" },
-<<<<<<< HEAD
-                { value: "occupied", label: "已住客" },
-                { value: "dirty", label: "未清扫" },
-=======
                 // { value: "occupied", label: "已住客" },
                 // { value: "dirty", label: "未清扫" },
->>>>>>> 3bc577c (123)
                 { value: "reserved", label: "已预订" },
             ],
 
@@ -324,28 +302,14 @@ export default {
 
             // 房间状态
             roomStatusList: [
-<<<<<<< HEAD
-                { itemValue: "vacant", itemName: "空闲中" },
-                { itemValue: "occupied", itemName: "已住客" },
-                { itemValue: "dirty", itemName: "未清扫" },
-                { itemValue: "reserved", itemName: "已预订" },
-=======
                 { itemValue: "vacant", itemName: "近期空闲中" },
                 // { itemValue: "occupied", itemName: "已住客" },
                 // { itemValue: "dirty", itemName: "未清扫" },
                 { itemValue: "reserved", itemName: "近期有预订" },
->>>>>>> 3bc577c (123)
             ],
 
             // 房间状态表格内标签
             roomStatusTagList: [
-<<<<<<< HEAD
-                { itemValue: "空闲中", itemName: "success" },
-                { itemValue: "已住客", itemName: "info" },
-                { itemValue: "未清扫", itemName: "danger" },
-                { itemValue: "已预订", itemName: "warning" },
-            ],
-=======
                 { itemValue: "近期空闲中", itemName: "success" },
                 // { itemValue: "已住客", itemName: "info" },
                 // { itemValue: "未清扫", itemName: "danger" },
@@ -354,27 +318,18 @@ export default {
 
             // 一房间已预订时间
             dayReserved: [],
->>>>>>> 3bc577c (123)
         };
     },
 
     computed: {
-<<<<<<< HEAD
-        ...mapState("room", ["roomData"]),
-=======
         ...mapState("room", ["roomData", "reservedArray"]),
->>>>>>> 3bc577c (123)
     },
 
     methods: {
         ...mapActions("room", {
             getRoomAsync: "getRoomAsync", // 获取房间all
             addRoomAsync: "addRoomAsync", // 添加房间单个
-<<<<<<< HEAD
-            editRoomAsync: "editRoomAsync", // 添加房间单个
-=======
             editRoomAsync: "editRoomAsync", // 修改房间单个
->>>>>>> 3bc577c (123)
             deleteRoomAsync: "deleteRoomAsync", //删除房间单个
         }),
         ...mapMutations("room", {
@@ -384,20 +339,13 @@ export default {
             deleteRoomMutation: "deleteRoom", // 删除房间单个
             searchRoomByType: "searchRoomByType", // 查询房间--类型
             searchRoomByStatus: "searchRoomByStatus", // 查询房间--状态
-<<<<<<< HEAD
-=======
             roomReservedDay: "roomReservedDay", // 获取一房间预定时间
->>>>>>> 3bc577c (123)
         }),
 
         // 获取所有房间列表 数据
         getRoom() {
-<<<<<<< HEAD
-            this.getRoomAsync();
-=======
             this.roomReservedChange();
             this.getRoomAsync().then();
->>>>>>> 3bc577c (123)
             this.roomTableData = this.$store.state.room.roomData;
         },
 
@@ -532,8 +480,6 @@ export default {
             // 搜索关键词清空
             this.searchKeyWord = "";
         },
-<<<<<<< HEAD
-=======
 
         // 房间日程
         handleCalendar(row) {
@@ -602,7 +548,6 @@ export default {
                 }
             });
         },
->>>>>>> 3bc577c (123)
     },
 
     mount() {
@@ -636,11 +581,8 @@ export default {
         }
     }
 }
-<<<<<<< HEAD
-=======
 
 .calendar-reserved {
     color: #e6a23c;
 }
->>>>>>> 3bc577c (123)
 </style>
