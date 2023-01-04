@@ -1,4 +1,5 @@
 import { userGet, userAdd, userDelete, userEdit } from "../../utils/data.js";
+import { Message } from 'element-ui';
 
 export const user = {
 	namespaced: true,//开启命名空间
@@ -47,11 +48,22 @@ export const user = {
 		addUserAsync(store, value) {
 			userAdd(value)
 				.then((response) => {
-					// 这里我需要返回的刚添加新的对象
+					Message({
+						message: "创建用户成功",
+						center: true,
+						type: "success",
+					});
 					store.commit('addUser', response.data)
 				})
 				.catch((err) => {
-					console.log(err);
+					if (err.response.status == 409 && err.response.statusText == "Conflict") {
+						Message({
+							message: "电话号码或身份号码已注册",
+							center: true,
+							type: "error",
+						});
+					}
+					console.log(err)
 				});
 		},
 
@@ -59,9 +71,21 @@ export const user = {
 		editUserAsync(store, value) {
 			userEdit(value)
 				.then((response) => {
+					Message({
+						message: "修改成功",
+						center: true,
+						type: "success",
+					});
 					store.commit('editUser', response.data)
 				})
 				.catch((err) => {
+					if (err.response.status == 404) {
+						Message({
+							message: "用户不存在",
+							center: true,
+							type: "error",
+						});
+					}
 					console.log(err);
 				});
 		},
@@ -73,11 +97,18 @@ export const user = {
 					store.commit('deleteUser', value)
 				})
 				.catch((err) => {
+					if (err.response.status == 404) {
+						Message({
+							message: "用户不存在",
+							center: true,
+							type: "error",
+						});
+					}
 					console.log(err);
 				});
 		},
 	},
-	
+
 	mutations: {
 		// 获取用户
 		getUser(state, value) {

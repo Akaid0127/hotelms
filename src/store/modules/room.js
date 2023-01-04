@@ -1,5 +1,6 @@
 import { roomGet, roomAdd, roomDelete, roomEdit } from "../../utils/data.js";
 import moment from "moment";
+import { Message } from 'element-ui';
 export const room = {
 	namespaced: true,//开启命名空间
 
@@ -19,10 +20,21 @@ export const room = {
 		addRoomAsync(store, value) {
 			roomAdd(value)
 				.then((response) => {
-					// 这里我需要返回的刚添加新的对象
+					Message({
+						message: "创建房间成功",
+						center: true,
+						type: "success",
+					});
 					store.commit('addRoom', response.data)
 				})
 				.catch((err) => {
+					if (err.response.status == 409 && err.response.statusText == "Conflict") {
+						Message({
+							message: "房间号已注册",
+							center: true,
+							type: "error",
+						});
+					}
 					console.log(err);
 				});
 		},
@@ -34,6 +46,13 @@ export const room = {
 					store.commit('editRoom', response.data)
 				})
 				.catch((err) => {
+					if (err.response.status == 404) {
+						Message({
+							message: "房间不存在",
+							center: true,
+							type: "error",
+						});
+					}
 					console.log(err);
 				});
 		},
@@ -162,6 +181,54 @@ export const room = {
 					state.roomTypeNumArr[2] += 1
 				}
 			})
+		},
+
+		// 筛选可预订房间
+		/*
+			params(Object)
+				-type_
+				-check_in_time
+				-stay_length
+		*/
+		reservableRoom(state, params) {
+			state.reservableData.splice(0, state.reservableData.length)
+			state.roomData.forEach((item) => {
+				// 房间类型筛选
+				if (item.type_ === params.type_) {
+					let OriginalRes = [] // 原房间预定日数组
+					let RequiredRes = [] // 需求房间预定日数组
+					let result = false // 数组无重合
+					item.orders.forEach((item) => {
+						let itemDate = moment(item.check_in_time).format("YYYY-MM-DD");
+						for (let index = 1; index <= item.stay_length; index++) {
+							OriginalRes.push(
+								moment(moment(itemDate).add(index - 1, "days")).format(
+									"YYYY-MM-DD"
+								)
+							)
+						}
+					})
+					for (let index = 1; index <= params.stay_length; index++) {
+						RequiredRes.push(
+							moment(moment(moment(params.check_in_time).format("YYYY-MM-DD")).add(index - 1, "days")).format(
+								"YYYY-MM-DD"
+							)
+						)
+					}
+					// 判断是否重合
+					for (let index = 0; index < OriginalRes.length; index++) {
+						if (RequiredRes.includes(OriginalRes[index])) {
+							result = true;
+							break;
+						}
+					}
+
+					// 无重合push
+					if (result === false) {
+						state.reservableData.push(item)
+					}
+				}
+			})
 		}
 
 	},
@@ -177,6 +244,7 @@ export const room = {
 		roomTotal: 0,
 		roomTotalRes: 0,
 		roomTypeNumArr: [0, 0, 0],
+		reservableData: [],
 	},
 
 	getters: {

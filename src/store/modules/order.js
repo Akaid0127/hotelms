@@ -1,5 +1,6 @@
 import { orderGet, orderAdd, orderDelete, orderEdit } from "../../utils/data.js";
 import moment from "moment";
+import { Message } from 'element-ui';
 
 export const order = {
 	namespaced: true,//开启命名空间
@@ -20,10 +21,23 @@ export const order = {
 		addOrderAsync(store, value) {
 			orderAdd(value)
 				.then((response) => {
+					Message({
+						message: "创建订单成功",
+						center: true,
+						type: "success",
+					});
 					store.commit('addOrder', response.data)
 				})
 				.catch((err) => {
 					console.log(err);
+
+					if (err.response.status == 404) {
+						Message({
+							message: "用户或房间不存在",
+							center: true,
+							type: "error",
+						});
+					}
 				});
 		},
 
@@ -34,6 +48,13 @@ export const order = {
 					store.commit('editOrder', response.data)
 				})
 				.catch((err) => {
+					if (err.response.status == 404) {
+						Message({
+							message: "订单不存在",
+							center: true,
+							type: "error",
+						});
+					}
 					console.log(err);
 				});
 		},

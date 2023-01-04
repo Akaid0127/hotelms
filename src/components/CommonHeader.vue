@@ -27,7 +27,7 @@
                     <img class="user" :src="userImg" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item command="personalCenter">个人中心</el-dropdown-item>
                     <el-dropdown-item command="signOut">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -58,6 +58,9 @@ export default {
                 Cookie.remove("token");
                 // 跳转登录页面
                 this.$router.push('/login')
+            }else if(command === "personalCenter"){
+                // 跳转home
+                this.$router.push('/home')
             }
         },
     },

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie'
+import Cookie from "js-cookie";
 import { permitLogin } from "../utils/data.js";
 export default {
     name: "Login",
@@ -76,17 +76,40 @@ export default {
             // 校验通过
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    permitLogin(this.loginForm).then(({ data }) => {
-                        if (data.access_token && data.access_token !== "") {
-                            // token信息存入cookie用于不同页面的通信
-                            Cookie.set("token", data.access_token);
-                            // 跳转到首页
-                            this.$router.push("/home");
-                        }else{
-                            // todo 缺少后端密码错误
-                            console.log("密码错误");
-                        }
-                    });
+                    permitLogin(this.loginForm)
+                        .then(({ data }) => {
+                            if (data.access_token && data.access_token !== "") {
+                                this.$message({
+                                    message: "登录成功",
+                                    center: true,
+                                    type: "success",
+                                });
+                                // token信息存入cookie用于不同页面的通信
+                                Cookie.set("token", data.access_token);
+                                // 跳转到首页
+                                this.$router.push("/home");
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            if (err.message === "Network Error") {
+                                this.$message({
+                                    message: "未连接到后台",
+                                    center: true,
+                                    type: "error",
+                                });
+                            }
+                            if (
+                                err.response.data.detail ===
+                                "Incorrect phone_number or password"
+                            ) {
+                                this.$message({
+                                    message: "账号或密码错误",
+                                    center: true,
+                                    type: "error",
+                                });
+                            }
+                        });
                 }
             });
         },

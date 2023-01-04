@@ -1,5 +1,7 @@
 <template>
     <div>
+
+        <h1>施工区，等写完报告一并完善，这里是添加管理员</h1>
         <div class="addAdmin">
             <el-form ref="adminForm" :model="adminForm" label-width="80px">
                 <el-form-item label="工号">
@@ -15,8 +17,11 @@
                     <el-button type="primary" @click="createAdminBtn">立即创建</el-button>
                 </el-form-item>
             </el-form>
-            <el-input v-model="password"></el-input>
-            <el-button type="danger" @click="adminDeleteBtn">删除me</el-button>
+
+            <!-- <el-form label-width="80px">
+                <el-input v-model="password"></el-input>
+                <el-button type="danger" @click="adminDeleteBtn">删除me</el-button>
+            </el-form> -->
         </div>
     </div>
 </template>

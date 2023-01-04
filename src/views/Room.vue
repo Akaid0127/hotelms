@@ -78,7 +78,7 @@
                 :data="roomTableData"
                 stripe
                 style="width: 100%"
-                height="720"
+                height="750"
                 :border="true"
             >
                 <el-table-column prop="id" label="房间ID"></el-table-column>
@@ -274,10 +274,10 @@ export default {
             ],
 
             searchKeyWordOptions2: [
-                { value: "vacant", label: "空闲中" },
+                { value: "vacant", label: "近期空闲中" },
                 // { value: "occupied", label: "已住客" },
                 // { value: "dirty", label: "未清扫" },
-                { value: "reserved", label: "已预订" },
+                { value: "reserved", label: "今后有预订" },
             ],
 
             // 两者配合实现搜索
@@ -305,7 +305,7 @@ export default {
                 { itemValue: "vacant", itemName: "近期空闲中" },
                 // { itemValue: "occupied", itemName: "已住客" },
                 // { itemValue: "dirty", itemName: "未清扫" },
-                { itemValue: "reserved", itemName: "近期有预订" },
+                { itemValue: "reserved", itemName: "今后有预订" },
             ],
 
             // 房间状态表格内标签
@@ -313,7 +313,7 @@ export default {
                 { itemValue: "近期空闲中", itemName: "success" },
                 // { itemValue: "已住客", itemName: "info" },
                 // { itemValue: "未清扫", itemName: "danger" },
-                { itemValue: "近期有预订", itemName: "warning" },
+                { itemValue: "今后有预订", itemName: "warning" },
             ],
 
             // 一房间已预订时间
@@ -344,7 +344,7 @@ export default {
 
         // 获取所有房间列表 数据
         getRoom() {
-            this.roomReservedChange();
+            // this.roomReservedChange();
             this.getRoomAsync().then();
             this.roomTableData = this.$store.state.room.roomData;
         },
@@ -410,7 +410,13 @@ export default {
                 room_status: this.roomFormDataEdit.room_status,
             };
             // 调用编辑接口
-            this.editRoomAsync(editFormFormat);
+            this.editRoomAsync(editFormFormat).then(() => {
+                this.$message({
+                    message: "修改成功",
+                    center: true,
+                    type: "success",
+                });
+            });
             // 清空表单数据
             this.$refs.roomFormEdit.resetFields();
             // 关闭弹窗
@@ -550,9 +556,6 @@ export default {
         },
     },
 
-    mount() {
-        this.getRoom();
-    },
     created() {
         this.getRoom();
     },

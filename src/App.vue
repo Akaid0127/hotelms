@@ -71,13 +71,14 @@ p,
 h3 {
     margin: 0;
     padding: 0;
+    padding-right:0!important;
 }
 
 /* 设置项目高占比视口100% */
 #app {
     /* height: 100vh; */
     /* 如果采用zoom缩放适配，高度宽度都要写死 */
-    height: 924px;
+    height: 920px;
     background-color: #f7f6f2;
 }
 </style>

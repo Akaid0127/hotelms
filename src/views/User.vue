@@ -54,7 +54,7 @@
         <div class="middle">
             <!-- 用户表格 -->
             <!-- 表格信息 -->
-            <el-table :data="userTableData" stripe style="width: 100%" height="720" :border="true">
+            <el-table :data="userTableData" stripe style="width: 100%" height="750" :border="true">
                 <el-table-column prop="id" label="用户ID"></el-table-column>
                 <el-table-column prop="name" label="用户姓名"></el-table-column>
                 <el-table-column prop="phone_number" label="手机号码"></el-table-column>

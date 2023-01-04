@@ -9,41 +9,41 @@
                         查看空房信息
                     </div>
                     <div>
-                        <el-form ref="form" :model="orderRoomForm">
-                            <el-form-item>
-                                <span>房型选择</span>
-                                <el-radio-group v-model="orderRoomForm.type">
+                        <el-form
+                            ref="form"
+                            :model="orderRoomForm"
+                            label-width="200px"
+                            label-position="top"
+                        >
+                            <el-form-item prop="type_" label="房型选择">
+                                <el-radio-group v-model="orderRoomForm.type_">
                                     <div class="room-radio">
-                                        <el-radio label="豪华电竞房" border></el-radio>
-                                        <el-radio label="亚太海景房" border></el-radio>
-                                        <el-radio label="情侣主题房" border></el-radio>
-                                        <el-radio label="高级大床房" border></el-radio>
-                                        <el-radio label="标准双床房" border></el-radio>
-                                        <el-radio label="简约单人房" border></el-radio>
+                                        <el-radio
+                                            v-for="item in roomTypeList"
+                                            :key="item.itemValue"
+                                            :label="item.itemValue"
+                                            border
+                                        >{{item.itemName}}</el-radio>
                                     </div>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item>
-                                <span>床位选择</span>
-                                <br />
-                                <el-select v-model="orderRoomForm.num" placeholder="请选择">
-                                    <el-option
-                                        v-for="item in bedNumOption"
-                                        :key="item.value"
-                                        :value="item.name"
-                                    ></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item>
-                                <span>日期选择</span>
-                                <br />
+
+                            <el-form-item prop="check_in_time" label="入住日期">
                                 <el-date-picker
-                                    v-model="orderRoomForm.data"
-                                    type="daterange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期"
+                                    v-model="orderRoomForm.check_in_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    style="width: 97%;"
                                 ></el-date-picker>
+                            </el-form-item>
+
+                            <el-form-item prop="stay_length" label="入住天数">
+                                <el-input-number
+                                    v-model="orderRoomForm.stay_length"
+                                    :min="1"
+                                    :max="999"
+                                    style="width: 97%;"
+                                ></el-input-number>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="content2">
                     <div class="title">
                         <span>
-                            <h2>吴氏集团宾馆</h2>
+                            <h2>南工杨氏集团宾馆</h2>
                         </span>
                         <el-tag size="mini" type="info">推荐双人入住</el-tag>
                         <el-tag size="mini" type="info">机场班车</el-tag>
@@ -131,42 +131,73 @@
                 <!-- 筛选表房间表格 -->
                 <el-card class="content4">
                     <el-table :data="roomTableData" stripe style="width: 100%" height="300">
-                        <el-table-column prop="id" label="房间号" width="80" align="center"></el-table-column>
+                        <el-table-column prop="id" label="房间ID"></el-table-column>
+                        <el-table-column prop="room_number" label="房间号"></el-table-column>
                         <el-table-column
-                            prop="type"
+                            prop="type_"
                             label="房间类型"
-                            width="180"
-                            align="center"
-                            :formatter="(row) => roomFomatter(row.type, roomTypeList)"
+                            :formatter="(row) => roomFomatter(row.type_, roomTypeList)"
                         ></el-table-column>
-                        <el-table-column
-                            prop="bed"
-                            label="房间床位"
-                            width="150"
-                            align="center"
-                            :formatter="(row) => roomFomatter(row.bed, bedTypeList)"
-                        ></el-table-column>
-                        <el-table-column prop="price" label="房间价格" width="150" align="center"></el-table-column>
-                        <el-table-column
-                            prop="status"
-                            label="房间状态"
-                            width="180"
-                            align="center"
-                            :formatter="(row) => roomFomatter(row.status, roomStatusList)"
-                        ></el-table-column>
-                        <el-table-column label="操作" align="center">
+                        <el-table-column prop="price" label="房间价格"></el-table-column>
+                        <el-table-column prop="room_status" label="房间状态">
                             <template slot-scope="scope">
-                                <el-button
-                                    size="mini"
-                                    :type="roomStatusBtn(scope.row.status)"
-                                    plain
-                                    @click="handleEdit(scope.$index, scope.row)"
-                                >{{scope.row.status == "1"||scope.row.status == "2" ?"不可订购":"订购房间"}}</el-button>
+                                <el-tag
+                                    :type="roomFomatter(roomFomatter(scope.row.room_status, roomStatusList),roomStatusTagList)"
+                                >{{roomFomatter(scope.row.room_status, roomStatusList)}}</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="operation" label="操作">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="ConfirmRes(scope.row)">确认预定</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
+
+                    <el-dialog
+                        title="确认订购房间"
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        :before-close="handleClose"
+                    >
+                        <el-form
+                            label-position="top"
+                            label-width="80px"
+                            :model="userData"
+                            :rules="userDataRules"
+                            ref="userData"
+                            :hide-required-asterisk="true"
+                        >
+                            <el-form-item prop="userID">
+                                <el-input
+                                    v-model="userData.userID"
+                                    placeholder="请输入用户ID"
+                                    prefix-icon="el-icon-user"
+                                ></el-input>
+                            </el-form-item>
+                        </el-form>
+
+                        <el-descriptions direction="vertical" :column="2" border>
+                            
+                            <el-descriptions-item label="房间号">{{confirmRoomData.room_number}}</el-descriptions-item>
+                            <el-descriptions-item
+                                label="房间类型"
+                            >{{roomFomatter(orderRoomForm.type_,roomTypeList)}}</el-descriptions-item>
+
+                            <el-descriptions-item label="入住天数">{{orderRoomForm.stay_length+"天"}}</el-descriptions-item>
+                            <el-descriptions-item label="花费">{{confirmRoomData.price}}</el-descriptions-item>
+                            <el-descriptions-item
+                                label="入住时间"
+                            >{{dataFormat(orderRoomForm.check_in_time)}}</el-descriptions-item>
+                        </el-descriptions>
+
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="submit">确 定</el-button>
+                        </span>
+                    </el-dialog>
                 </el-card>
             </el-col>
+
             <el-col :span="9">
                 <!-- 文字手风琴 -->
                 <el-card class="content5">
@@ -178,32 +209,37 @@
 </template>
 
 <script>
-import TxtAccordion from '../components/TxtAccordion.vue'
+import moment from "moment";
+import TxtAccordion from "../components/TxtAccordion.vue";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
     name: "Addition",
-    components:{
+    components: {
         TxtAccordion,
     },
     data() {
         return {
             // 房间筛选表单
             orderRoomForm: {
-                type: "",
-                num: "",
-                data: "",
+                type_: "single",
+                check_in_time: moment(),
+                stay_length: "1",
             },
 
-            // 床位选择
-            bedNumOption: [
-                {
-                    name: "1张床位",
-                    value: 1,
-                },
-                {
-                    name: "2张床位",
-                    value: 2,
-                },
-            ],
+            // 用户ID
+            userData: {
+                userID: "",
+            },
+
+            userDataRules: {
+                userID: [
+                    {
+                        required: true,
+                        message: "请输入用户ID",
+                        trigger: "blur",
+                    },
+                ],
+            },
 
             // 顾客评价
             userComments: [
@@ -240,94 +276,67 @@ export default {
             ],
 
             // 筛选表格数据
-            roomTableData: [
-                {
-                    id: "1001",
-                    type: "1",
-                    bed: "1",
-                    price: "560",
-                    status: "1",
-                },
-                {
-                    id: "1002",
-                    type: "2",
-                    bed: "2",
-                    price: "560",
-                    status: "2",
-                },
-                {
-                    id: "1003",
-                    type: "2",
-                    bed: "1",
-                    price: "560",
-                    status: "3",
-                },
-                {
-                    id: "1004",
-                    type: "1",
-                    bed: "1",
-                    price: "560",
-                    status: "1",
-                },
-                {
-                    id: "1005",
-                    type: "2",
-                    bed: "2",
-                    price: "560",
-                    status: "2",
-                },
-                {
-                    id: "1006",
-                    type: "2",
-                    bed: "1",
-                    price: "560",
-                    status: "3",
-                },
-            ],
+            roomTableData: [],
+
+            // 确认订购dialog
+            dialogVisible: false,
+
+            // 确认订购房间信息
+            confirmRoomData: {},
 
             // 房间类型
             roomTypeList: [
-                { itemValue: "1", itemName: "豪华电竞房" },
-                { itemValue: "2", itemName: "亚太海景房" },
-                { itemValue: "3", itemName: "情侣主题房" },
-                { itemValue: "4", itemName: "高级大床房" },
-                { itemValue: "5", itemName: "标准双床房" },
-                { itemValue: "6", itemName: "简约单人房" },
+                { itemValue: "single", itemName: "豪华大床房" },
+                { itemValue: "twin", itemName: "简约双床房" },
+                { itemValue: "family", itemName: "温馨家庭房" },
             ],
-            // 床位类型
-            bedTypeList: [
-                { itemValue: "1", itemName: "一张床" },
-                { itemValue: "2", itemName: "两张床" },
-            ],
+
             // 房间状态
             roomStatusList: [
                 { itemValue: "1", itemName: "已入住" },
                 { itemValue: "2", itemName: "清理中" },
                 { itemValue: "3", itemName: "空闲中" },
             ],
+
+            // 房间状态
+            roomStatusList: [
+                { itemValue: "vacant", itemName: "近期空闲中" },
+                { itemValue: "reserved", itemName: "今后有预订" },
+            ],
+
+            // 房间状态表格内标签
+            roomStatusTagList: [
+                { itemValue: "近期空闲中", itemName: "success" },
+                { itemValue: "今后有预订", itemName: "warning" },
+            ],
         };
     },
 
-    computed: {
-        // 房间类型计算 删
-        roomType: (typeNum) => {
-            if (typeNum === "1") {
-                return "豪华电竞房";
-            } else if (typeNum === "2") {
-                return "亚太海景房";
-            } else if (typeNum === "3") {
-                return "情侣主题房";
-            } else if (typeNum === "4") {
-                return "高级大床房";
-            } else if (typeNum === "5") {
-                return "标准双床房";
-            } else if (typeNum === "6") {
-                return "简约单人房";
-            }
+    watch: {
+        orderRoomForm: {
+            handler(newvalue, oldvalue) {
+                this.CalcFilterRoom();
+            },
+            deep: true,
         },
     },
 
+    computed: {
+        ...mapState("room", ["reservableData"]), // 计算筛选房间结果
+    },
+
     methods: {
+        ...mapActions("order", {
+            getOrderAsync: "getOrderAsync", // 获取订单all
+            addOrderAsync: "addOrderAsync", // 添加订单单个
+        }),
+        ...mapActions("room", {
+            getRoomAsync: "getRoomAsync", // 获取房间all
+        }),
+        ...mapMutations("room", {
+            reservableRoom: "reservableRoom", // 计算筛选房间
+        }),
+
         // 表格数据格式化
         roomFomatter(value, list) {
             if (value === "" || value == undefined) return "";
@@ -335,15 +344,66 @@ export default {
             return item ? item.itemName : "";
         },
 
-        // 房间是否可以预定按钮计算
-        roomStatusBtn(status) {
-            console.log(status);
-            if (status === "1" || status === "2") {
-                return "info";
-            } else if (status === "3") {
-                return "success";
-            }
+        // 计算筛选房间
+        CalcFilterRoom() {
+            let tempParams = {
+                type_: this.orderRoomForm.type_,
+                check_in_time: this.orderRoomForm.check_in_time,
+                stay_length: this.orderRoomForm.stay_length,
+            };
+            this.reservableRoom(tempParams);
+            this.roomTableData = this.$store.state.room.reservableData;
         },
+
+        // 确认订购房间（需输入用户ID）
+        ConfirmRes(row) {
+            this.dialogVisible = true;
+            this.confirmRoomData = { ...row };
+        },
+
+        // dialog关闭
+        handleClose(done) {
+            this.dialogVisible = false;
+        },
+
+        // dialog提交
+        submit() {
+            this.$refs.userData.validate((valid) => {
+                if (valid) {
+                    // 提交post-order
+                    let addFormFormat = {
+                        user_id: this.userData.userID,
+                        room_id: this.confirmRoomData.id,
+                        check_in_time: moment(
+                            this.orderRoomForm.check_in_time
+                        ).format("YYYY-MM-DD HH:mm:ss"),
+                        stay_length: this.orderRoomForm.stay_length,
+                    };
+                    // 调用添加接口
+                    this.addOrderAsync(addFormFormat).then(() => {
+                        // 重新获取列表接口
+                        this.getOrderAsync();
+                        // 及时更新room接口
+                        this.getRoomAsync();
+                        // 重新计算剩余房间
+                        this.CalcFilterRoom();
+                    });
+                    // 清空表单数据
+                    this.$refs.userData.resetFields();
+                    // 关闭弹窗
+                    this.dialogVisible = false;
+                }
+            });
+        },
+
+        // 时间戳转换
+        dataFormat(timeStamp) {
+            return moment(timeStamp).format("YYYY年MM月DD日HH时");
+        },
+    },
+
+    mounted() {
+        this.CalcFilterRoom();
     },
 };
 </script>
@@ -357,8 +417,6 @@ export default {
     height: 460px;
     margin-right: 16px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     span {
         color: #4b6587;
     }
@@ -390,6 +448,7 @@ export default {
             margin-bottom: 8px;
         }
     }
+
     .el-select {
         width: 96%;
     }
@@ -581,6 +640,7 @@ export default {
 .content4 {
     height: 340px;
     margin-right: 16px;
+
 }
 
 /* 简介样式 */

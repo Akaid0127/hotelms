@@ -80,7 +80,7 @@
         <div class="middle">
             <!-- 订单表格 -->
             <!-- 表格信息 -->
-            <el-table :data="orderTableData" stripe style="width: 100%" height="720" :border="true">
+            <el-table :data="orderTableData" stripe style="width: 100%" height="750" :border="true">
                 <el-table-column prop="id" label="订单ID"></el-table-column>
                 <el-table-column prop="user_id" label="订单用户"></el-table-column>
                 <el-table-column prop="room_id" label="订单房间"></el-table-column>
@@ -305,7 +305,6 @@ export default {
             this.$refs.orderForm.validate((valid) => {
                 if (valid) {
                     // 添加
-                    console.log(this.orderFormData.check_in_time);
                     let addFormFormat = {
                         user_id: this.orderFormData.user_id,
                         room_id: this.orderFormData.room_id,
@@ -344,7 +343,21 @@ export default {
                     row.payment_status == "unpaid" ? "paid" : "unpaid",
             };
             // 调用编辑接口
-            this.editOrderAsync(editFormFormat);
+            this.editOrderAsync(editFormFormat).then(() => {
+                if (editFormFormat.payment_status == "unpaid") {
+                    this.$message({
+                        message: "取消支付成功",
+                        center: true,
+                        type: "warning",
+                    });
+                } else {
+                    this.$message({
+                        message: "支付成功",
+                        center: true,
+                        type: "success",
+                    });
+                }
+            });
         },
 
         // 删除订单
