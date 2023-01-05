@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import moment from "moment";
 export default {
     name: "Order",
@@ -426,6 +426,7 @@ export default {
     mount() {
         this.getOrder();
     },
+    
     created() {
         this.getOrder();
     },

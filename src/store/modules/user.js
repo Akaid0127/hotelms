@@ -62,6 +62,12 @@ export const user = {
 							center: true,
 							type: "error",
 						});
+					} else if (err.response.status == 422 && err.response.statusText == "Unprocessable Entity") {
+						Message({
+							message: "电话号码或身份号码格式不正确",
+							center: true,
+							type: "error",
+						});
 					}
 					console.log(err)
 				});
@@ -82,6 +88,12 @@ export const user = {
 					if (err.response.status == 404) {
 						Message({
 							message: "用户不存在",
+							center: true,
+							type: "error",
+						});
+					} else if (err.response.status == 422 && err.response.statusText == "Unprocessable Entity") {
+						Message({
+							message: "电话号码或身份号码格式不正确",
 							center: true,
 							type: "error",
 						});

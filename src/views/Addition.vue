@@ -211,7 +211,7 @@
 <script>
 import moment from "moment";
 import TxtAccordion from "../components/TxtAccordion.vue";
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     name: "Addition",
     components: {

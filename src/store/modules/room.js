@@ -34,6 +34,12 @@ export const room = {
 							center: true,
 							type: "error",
 						});
+					} else if (err.response.status == 422 && err.response.statusText == "Unprocessable Entity") {
+						Message({
+							message: "房间号格式不正确",
+							center: true,
+							type: "error",
+						});
 					}
 					console.log(err);
 				});

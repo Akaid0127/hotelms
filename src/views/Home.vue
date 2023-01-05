@@ -108,8 +108,8 @@
 import * as echarts from "echarts";
 import moment from "moment";
 import Clock from "../components/Clock.vue";
-import { adminGet, adminAdd, adminDelete, adminEdit } from "../utils/data.js";
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { adminGet} from "../utils/data.js";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
     name: "Home",

@@ -7,7 +7,7 @@
                     <el-input v-model="loginForm.adminName" placeholder="请输入工号"></el-input>
                 </el-form-item>
                 <el-form-item label="管理员密码" prop="passward">
-                    <el-input type="passward" v-model="loginForm.passward" placeholder="请输入密码"></el-input>
+                    <el-input type="passward" v-model="loginForm.passward" placeholder="请输入密码" show-password></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submit">登录</el-button>
